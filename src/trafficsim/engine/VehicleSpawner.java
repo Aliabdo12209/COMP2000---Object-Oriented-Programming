@@ -40,8 +40,11 @@ public class VehicleSpawner {
 
     public VehicleSpawner(Random rng, double spawnProbability) {
         this.rng = Objects.requireNonNull(rng, "Random source cannot be null");
-        if (spawnProbability < 0.0 || spawnProbability > 1.0) {
-            throw new IllegalArgumentException("Spawn probability must be between 0 and 1");
+        if (!Double.isFinite(spawnProbability)
+        || spawnProbability < 0.0
+        || spawnProbability > 1.0) {
+            throw new IllegalArgumentException(
+            "Spawn probability must be finite and between 0 and 1");
         }
         this.spawnProbability = spawnProbability;
         this.vehicleMix = new WeightedRandom<>(rng);

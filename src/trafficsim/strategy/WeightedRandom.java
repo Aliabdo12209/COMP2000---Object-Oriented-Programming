@@ -15,12 +15,20 @@ public class WeightedRandom<T> {
     }
 
     public void add(T item, double weight) {
-        if (weight <= 0) {
-            throw new IllegalArgumentException("weight must be positive");
-        }
-        items.add(item);
-        weights.add(weight);
-        totalWeight += weight;
+        if (!Double.isFinite(weight) || weight <= 0.0) {
+        throw new IllegalArgumentException(
+                "Weight must be finite and positive");
+    }
+
+    double newTotalWeight = totalWeight + weight;
+    if (!Double.isFinite(newTotalWeight)) {
+        throw new IllegalArgumentException(
+                "Total weight must remain finite");
+    }
+
+    items.add(item);
+    weights.add(weight);
+    totalWeight = newTotalWeight;
     }
 
     public T pick() {
